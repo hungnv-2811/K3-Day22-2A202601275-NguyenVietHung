@@ -1,30 +1,46 @@
-# ── LangChain core ────────────────────────────────────────────────
-langchain>=0.3.0
-langchain-core>=0.3.0
-langchain-community>=0.3.0
-langchain-text-splitters>=0.3.0
+# ══════════════════════════════════════════════════════════════════
+#  Day 22 Lab — Dependencies (đã pin version, verify chạy được)
+#
+#  ⚠️  QUAN TRỌNG — vì sao phải pin nhánh LangChain 0.3.x:
+#      ragas 0.4.3 hard-import `langchain_community.chat_models.vertexai`
+#      (xem ragas/llms/base.py:12). Module này đã bị XOÁ ở
+#      langchain-community 0.4.x, nên để `>=0.3.0` không pin sẽ khiến pip
+#      kéo về community 0.4.x → ModuleNotFoundError khi chạy Bước 3.
+#      Nhánh 0.3.x cũng đúng nhánh mà Guide.md/requirements.md viết cho.
+#
+#  Cài đặt:  pip install -r requirements.txt
+# ══════════════════════════════════════════════════════════════════
+
+# ── LangChain core (pin <1.0 — bắt buộc, xem ghi chú trên) ───────
+langchain==0.3.30
+langchain-core==0.3.86
+langchain-community==0.3.31
+langchain-text-splitters==0.3.11
 
 # ── LLM Providers (cài tất cả để hỗ trợ đa provider) ─────────────
-langchain-openai>=0.3.0          # OpenAI + OpenRouter
-langchain-anthropic>=0.1.0       # Anthropic Claude
-langchain-google-genai>=1.0.0    # Google Gemini
-langchain-ollama>=0.1.0          # Ollama (local)
+langchain-openai==0.3.35         # OpenAI + OpenRouter (OpenAI-compatible)
+langchain-anthropic==0.3.22      # Anthropic Claude
+langchain-google-genai==2.1.12   # Google Gemini
+langchain-ollama==0.3.10         # Ollama (local)
 
-# ── LangSmith ─────────────────────────────────────────────────────
-langsmith>=0.2.0
+# ── LangSmith (tracing + Prompt Hub) ─────────────────────────────
+langsmith==0.3.45
 
-# ── Vector store ──────────────────────────────────────────────────
-faiss-cpu>=1.7.0
+# ── Vector store ─────────────────────────────────────────────────
+faiss-cpu==1.15.0
 
-# ── RAG Evaluation ────────────────────────────────────────────────
-ragas>=0.4.0
-datasets>=2.0.0                  # required by RAGAS internally
-numpy>=1.25.0
+# ── RAG Evaluation ───────────────────────────────────────────────
+ragas==0.4.3
+datasets==5.0.1                  # ragas dùng nội bộ
+numpy==2.4.6                     # tính mean các list điểm RAGAS
 
-# ── Guardrails AI ─────────────────────────────────────────────────
-guardrails-ai>=0.5.0
+# ── Guardrails AI ────────────────────────────────────────────────
+# Lưu ý: `pip check` sẽ báo guardrails-ai 0.11.0 muốn langchain-core>=1.0.
+# Đây chỉ là xung đột METADATA — Guard/Validator/OnFailAction không thực sự
+# import langchain-core, đã verify chạy tốt với langchain-core 0.3.86.
+guardrails-ai==0.11.0
 
-# ── Utilities ─────────────────────────────────────────────────────
-python-dotenv>=1.0.0
-openai>=1.0.0                    # OpenAI SDK (used by langchain-openai)
-tiktoken>=0.5.0                  # token counting
+# ── Utilities ────────────────────────────────────────────────────
+python-dotenv==1.2.3
+openai==2.54.0                   # SDK nền cho langchain-openai
+tiktoken==0.14.0                 # đếm token cho text splitter

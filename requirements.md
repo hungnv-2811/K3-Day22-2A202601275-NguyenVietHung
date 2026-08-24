@@ -11,22 +11,14 @@ pip install -r requirements.txt
 
 ## requirements.txt
 
-```
-langchain>=0.3.0
-langchain-core>=0.3.0
-langchain-openai>=0.3.0
-langchain-community>=0.3.0
-langchain-text-splitters>=0.3.0
-langsmith>=0.2.0
-openai>=1.0.0
-faiss-cpu>=1.7.0
-ragas>=0.4.0
-guardrails-ai>=0.5.0
-python-dotenv>=1.0.0
-tiktoken>=0.5.0
-datasets>=2.0.0
-numpy>=1.25.0
-```
+See [`requirements.txt`](requirements.txt) for the exact pinned versions that are verified to work together.
+
+> ⚠️ **Why versions are pinned, not just `>=`:** `ragas==0.4.3` hard-imports
+> `langchain_community.chat_models.vertexai` internally. That module was
+> removed in `langchain-community` 0.4.x, so an unpinned `langchain-community>=0.3.0`
+> install can silently resolve to 0.4.x and crash with `ModuleNotFoundError`
+> partway through Step 3 (after 15+ minutes of RAGAS calls). Installing from
+> the pinned `requirements.txt` avoids this.
 
 ## Package Purposes
 
@@ -53,7 +45,7 @@ numpy>=1.25.0
 - `result[metric_name]` returns a **list** of floats for multiple samples — use `numpy.mean()` to average
 - Pass `llm=` and `embeddings=` to the `evaluate()` function, not to metric constructors
 
-### Guardrails AI 0.10.x
+### Guardrails AI 0.11.x
 - `on_fail` parameter belongs in the **validator constructor**: `MyValidator(on_fail=OnFailAction.FIX)`
 - `Guard.use()` accepts validator **instances**, not classes
 - `Guard.validate(text)` is the main entry point
@@ -64,23 +56,29 @@ numpy>=1.25.0
 
 ## Environment Variables
 
-Copy this to your `.env` file:
+Copy the template and fill in your own keys:
 
+```bash
+cp .env.example .env
+```
 
-> ⚠️ **Never commit `.env` to git.** Add it to `.gitignore`.
+See [`.env.example`](.env.example) for the full list of variables (LangSmith keys are
+required for every step; only the section matching your chosen `PROVIDER` needs real values).
+
+> ⚠️ **Never commit `.env` to git.** It's already listed in `.gitignore` — verify with
+> `git status` before every commit.
 
 ## Verify Installation
 
 Run the config check:
 ```bash
-python config.py
+cd src && python config.py
 ```
 
 Expected output:
 ```
-✅ Config loaded successfully
-   LangSmith project : your-project-name
-   OpenAI endpoint   : https://...
-   Default LLM model : gpt-5.4-mini
-   Embedding model   : text-embedding-3-small
+✅ Config OK  |  Provider: OPENAI  |  Project: day22-lab
 ```
+
+If you see `⚠️ Thiếu biến môi trường` instead, one or more required keys in `.env` are
+still the placeholder value (`your_..._here`) — go back and fill them in.

@@ -61,8 +61,8 @@ Mở tệp `.env` và điền các giá trị sau:
 
 ```env
 # LangSmith — bắt buộc cho tất cả các bước
-LANGSMITH_API_KEY=lsv2_...
-LANGSMITH_PROJECT=day22-lab
+LANGCHAIN_API_KEY=lsv2_pt_...
+LANGCHAIN_PROJECT=day22-lab
 LANGCHAIN_TRACING_V2=true
 
 # Chọn một trong các provider bên dưới
@@ -246,12 +246,12 @@ Nộp URL GitHub repository và URL LangSmith project của bạn qua cổng n�
 ## Tips và lưu ý
 
 **LangSmith tracing — đặt biến môi trường đúng thứ tự:**
-Các biến `LANGCHAIN_TRACING_V2`, `LANGSMITH_API_KEY`, và `LANGSMITH_PROJECT` phải được đặt **trước khi import bất kỳ thứ gì từ LangChain**. Nếu import trước khi đặt biến, tracing sẽ không hoạt động.
+Các biến `LANGCHAIN_TRACING_V2`, `LANGCHAIN_API_KEY`, và `LANGCHAIN_PROJECT` phải được đặt **trước khi import bất kỳ thứ gì từ LangChain**. Nếu import trước khi đặt biến, tracing sẽ không hoạt động.
 
 ```python
 import os
 os.environ["LANGCHAIN_TRACING_V2"] = "true"   # Phải đặt trước
-os.environ["LANGSMITH_API_KEY"]    = "..."     # Phải đặt trước
+os.environ["LANGCHAIN_API_KEY"]    = "..."    # Phải đặt trước
 from langchain_core.prompts import ChatPromptTemplate  # Sau đó mới import
 ```
 

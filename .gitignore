@@ -26,5 +26,5 @@ env/
 # macOS
 .DS_Store
 
-# Lab outputs (không commit, chỉ nộp evidence/)
-data/ragas_report.json
+# Lưu ý: KHÔNG ignore data/ragas_report.json — rubric mục 3.5 yêu cầu file này
+# phải tồn tại trong repo (thiếu bị trừ 2đ). File chỉ chứa điểm số, không có secret.
